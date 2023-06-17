@@ -1,35 +1,48 @@
 <!DOCTYPE html>
 <html>
-<head>
-    <title>Vacation Chatbot</title>
-    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
-    <script>
-        $(document).ready(function () {
-            $('form').on('submit', function (event) {
-                event.preventDefault();
-                var userInput = $('#user-input').val();
+  <head>
+    <title>Input and Output</title>
+  </head>
+  <body>
+    <h1>Input and Output</h1>
+    <input type="text" id="input-box" placeholder="Enter input" />
+    <button onclick="submitInput()">Submit</button>
+    <br /><br />
+    <textarea id="output-box" rows="5" cols="30" readonly></textarea>
 
-                $.ajax({
-                    type: 'POST',
-                    url: '/chat',
-                    data: {user_input: userInput},
-                    success: function (response) {
-                        $('#chatbox').append('<p><strong>You:</strong> ' + userInput + '</p>');
-                        $('#chatbox').append('<p><strong>Chatbot:</strong> ' + response + '</p>');
-                        $('#user-input').val('');
-                        $('#user-input').focus();
-                    }
-                });
-            });
-        });
+    <script>
+      function submitInput() {
+        const input = document.getElementById("input-box").value;
+
+        const apiUrl = "http://127.0.0.1:5000/process-user-input"; // Replace with your backend API endpoint URL
+
+        const requestData = {
+          input: input,
+        };
+
+        fetch(apiUrl, {
+          method: "POST",
+          headers: {
+            "Content-Type": "application/json",
+          },
+          body: JSON.stringify(requestData),
+        })
+          .then((response) => response.json())
+          .then((data) => {
+            // Handle the API response data
+            console.log("Response:", data);
+            displayResponse(data.output);
+          })
+          .catch((error) => {
+            // Handle errors that occur during the API call
+            console.error("Error:", error);
+          });
+      }
+
+      function displayResponse(output) {
+        const outputBox = document.getElementById("output-box");
+        outputBox.value = output;
+      }
     </script>
-</head>
-<body>
-    <h1>Welcome to the Vacation Chatbot!</h1>
-    <div id="chatbox"></div>
-    <form method="POST" action="/chat">
-        <input type="text" id="user-input" autocomplete="off" placeholder="Enter your message..." />
-        <input type="submit" value="Send" />
-    </form>
-</body>
+  </body>
 </html>
