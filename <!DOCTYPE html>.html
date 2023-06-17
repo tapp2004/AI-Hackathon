@@ -1,0 +1,35 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Vacation Chatbot</title>
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
+    <script>
+        $(document).ready(function () {
+            $('form').on('submit', function (event) {
+                event.preventDefault();
+                var userInput = $('#user-input').val();
+
+                $.ajax({
+                    type: 'POST',
+                    url: '/chat',
+                    data: {user_input: userInput},
+                    success: function (response) {
+                        $('#chatbox').append('<p><strong>You:</strong> ' + userInput + '</p>');
+                        $('#chatbox').append('<p><strong>Chatbot:</strong> ' + response + '</p>');
+                        $('#user-input').val('');
+                        $('#user-input').focus();
+                    }
+                });
+            });
+        });
+    </script>
+</head>
+<body>
+    <h1>Welcome to the Vacation Chatbot!</h1>
+    <div id="chatbox"></div>
+    <form method="POST" action="/chat">
+        <input type="text" id="user-input" autocomplete="off" placeholder="Enter your message..." />
+        <input type="submit" value="Send" />
+    </form>
+</body>
+</html>
