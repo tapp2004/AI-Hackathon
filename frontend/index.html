@@ -1,0 +1,30 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <title>Vacation Chatbot</title>
+    <link rel="stylesheet" type="text/css" href="styles.css" />
+  </head>
+  <body>
+    <div class="container">
+      <h1 class="heading">Where would you like to go?</h1>
+      <div class="input-container">
+        <textarea
+          id="input-box"
+          class="input-box"
+          placeholder="Enter input"
+        ></textarea>
+      </div>
+      <button onclick="submitInput()">Submit</button>
+      <br /><br />
+      <textarea
+        id="output-box"
+        class="output-box"
+        rows="5"
+        cols="30"
+        readonly
+      ></textarea>
+    </div>
+
+    <script src="script.js"></script>
+  </body>
+</html>
