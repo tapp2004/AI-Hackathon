@@ -12,12 +12,12 @@
 
     <style>
       body {
-        background-image: url('https://cdn.wallpapersafari.com/47/96/XvogjA.gif');
+        background-image: url("https://cdn.wallpapersafari.com/47/96/XvogjA.gif");
         background-repeat: no-repeat;
         background-attachment: fixed;
         background-size: cover;
       }
-      </style>
+    </style>
 
     <script>
       function submitInput() {
@@ -40,7 +40,7 @@
           .then((data) => {
             // Handle the API response data
             console.log("Response:", data);
-            displayResponse(data.output);
+            displayResponse(data.message); // Update this line
           })
           .catch((error) => {
             // Handle errors that occur during the API call
