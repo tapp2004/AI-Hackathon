@@ -1,14 +1,23 @@
 <!DOCTYPE html>
 <html>
   <head>
-    <title>Input and Output</title>
+    <title>Vacation Chatbot</title>
   </head>
   <body>
-    <h1>Input and Output</h1>
+    <h1><center>Where would you like to go?</center></h1>
     <input type="text" id="input-box" placeholder="Enter input" />
     <button onclick="submitInput()">Submit</button>
     <br /><br />
     <textarea id="output-box" rows="5" cols="30" readonly></textarea>
+
+    <style>
+      body {
+        background-image: url('https://cdn.wallpapersafari.com/47/96/XvogjA.gif');
+        background-repeat: no-repeat;
+        background-attachment: fixed;
+        background-size: cover;
+      }
+      </style>
 
     <script>
       function submitInput() {
