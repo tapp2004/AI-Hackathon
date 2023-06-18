@@ -1,3 +1,4 @@
+import requests
 from flask import Flask, request, jsonify
 from flask_cors import CORS
 import openai
@@ -28,21 +29,36 @@ if __name__ == '__main__':
 """
 
 
-@app.route('/api/chatbot', methods=['POST'])
+def format_response(completions):
+    # Perform any necessary formatting or processing on the completions
+    # For example, you can join multiple completions into a single string
+    formatted_response = "\n".join(
+        completion['text'] for completion in completions)
+    return formatted_response
+
+
+@app.route('/process-user-input', methods=['POST'])
 def chatbot():
-    user_prompt = request.json['prompt']
+    user_prompt = request.get_json()['input']
+    field_value = []  # Assign a default value to field_value
 
-    response = openai.ChatCompletion.create(
-        engine='davinci',
-        prompt=user_prompt,
-        max_tokens=100,
-        temperature=0.8,
-        n=1,
-        stop=None
-    )
-    output = format_response(response)
+    # Get your OpenAI API key
+    api_key = "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"
+    headers = {
+        "Authorization": f"Bearer {api_key}",
+        "Content-Type": "application/json",
+    }
 
-    # generated_response = response.choices[0].text.strip()
+    api = requests.post("https://api.openai.com/v1/engines/davinci/completions",
+                        json={"prompt": user_prompt}, headers=headers)
+
+    if api.status_code == 200:
+        data = api.json()
+        field_value = data['choices']
+    else:
+        print(f"Request failed with status code: {api.status_code}")
+
+    output = format_response(field_value)
     return jsonify({'message': output})
 
 
@@ -117,16 +133,16 @@ def extract_destination_imagery(text):
     return 'No imagery available.'
 
 
-def format_response(api_response):
-    destinations = process_api_response(api_response)
+# def format_response(api_response):
+#     destinations = process_api_response(api_response)
 
-    formatted_destinations = []
-    for destination in destinations:
-        formatted_destination = {
-            'name': destination['name'],
-            'description': destination['description'],
-            'imagery': destination['imagery']
-        }
-        formatted_destinations.append(formatted_destination)
+#     formatted_destinations = []
+#     for destination in destinations:
+#         formatted_destination = {
+#             'name': destination['name'],
+#             'description': destination['description'],
+#             'imagery': destination['imagery']
+#         }
+#         formatted_destinations.append(formatted_destination)
 
-    return {'destinations': formatted_destinations}
+#     return {'destinations': formatted_destinations}
